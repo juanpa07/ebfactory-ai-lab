@@ -112,6 +112,13 @@ body { overflow-x: hidden; }
   pointer-events: none;
   z-index: -1;
   will-change: transform;
+  animation: lp-hero-drift 10s ease-in-out infinite alternate;
+}
+@keyframes lp-hero-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(-120px, 80px) scale(1.1); }
+  66%  { transform: translate(-240px, 20px) scale(0.95); }
+  100% { transform: translate(-360px, 100px) scale(1.05); }
 }
 
 .lp-hero__inner { display: flex; flex-direction: column; gap: var(--space-8); max-width: 920px; }
