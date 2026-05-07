@@ -29,12 +29,12 @@ CI/CD con GitHub Actions que compila automáticamente el Storybook y lo desplieg
 
 **Stack:** GitHub Actions, Pantheon, Multidev
 
-### /04 — Cuando el equipo automatiza al equipo
+### /04 — Del soporte al prompt: agentes que atienden clientes
 **Speaker:** Alejandro Toro · Fullstack Developer
 
-Automatización del canal de atención al cliente por WhatsApp. Claude Code controlando MCP servers, n8n orquestando — la operación se vuelve un prompt.
+Agentes de IA que atienden clientes por WhatsApp de forma autónoma. Claude Code controla MCP servers, n8n orquesta los flujos, y Odoo gestiona el contexto del cliente — todo el ciclo de soporte arranca desde un solo prompt.
 
-**Stack:** Claude Code, MCP, n8n
+**Stack:** Claude Code, MCP, n8n, Odoo, WhatsApp
 
 ---
 
