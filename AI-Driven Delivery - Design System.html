@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI-Driven Delivery — Sistema de Diseño · eBFactory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  /* ============================================================
+     PAGE-LOCAL: documentation chrome only.
+     All compositions below use ONLY tokens — no one-off values.
+     ============================================================ */
+  .doc-grid { display: grid; gap: var(--space-4); }
+  .doc-grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .doc-grid--4 { grid-template-columns: repeat(4, 1fr); }
+  .doc-grid--6 { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 900px) {
+    .doc-grid--3, .doc-grid--4, .doc-grid--6 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .swatch {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-secondary);
+  }
+  .swatch__chip { height: 88px; }
+  .swatch__meta {
+    padding: var(--space-3) var(--space-4);
+    display: flex; flex-direction: column; gap: 2px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .swatch__name { font-size: var(--text-sm); color: var(--text-primary); font-weight: var(--weight-medium); }
+  .swatch__token { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--text-muted); letter-spacing: var(--tracking-wide); }
+  .swatch__hex   { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle); }
+
+  .scale-row {
+    display: grid;
+    grid-template-columns: 120px 80px 1fr;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .scale-row:last-child { border-bottom: 1px solid var(--border-subtle); }
+  .scale-row__token { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); letter-spacing: var(--tracking-wide); }
+  .scale-row__px    { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-subtle); }
+  .scale-row__sample { color: var(--text-primary); letter-spacing: var(--tracking-tight); }
+
+  .space-row {
+    display: grid; grid-template-columns: 110px 80px 1fr; gap: var(--space-4); align-items: center;
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .space-row:last-child { border-bottom: 1px solid var(--border-subtle); }
+  .space-row__bar { height: 8px; background: var(--accent-500); border-radius: var(--radius-sm); }
+
+  .radii-row {
+    display: flex; align-items: center; gap: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+  }
+  .radii-demo { width: 56px; height: 56px; background: var(--neutral-300); border: 1px solid var(--border-default); }
+
+  .shadow-card {
+    height: 140px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: var(--space-4);
+  }
+
+  .motion-demo {
+    height: 88px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .motion-demo__dot {
+    position: absolute; top: 50%; left: 12px;
+    width: 16px; height: 16px;
+    background: var(--accent-500);
+    border-radius: var(--radius-full);
+    transform: translateY(-50%);
+    animation: slide 2s var(--ease-out) infinite alternate;
+  }
+  .motion-demo--fast .motion-demo__dot  { animation-duration: 0.4s; }
+  .motion-demo--base .motion-demo__dot  { animation-duration: 1s; }
+  .motion-demo--slow .motion-demo__dot  { animation-duration: 1.6s; }
+  @keyframes slide { from { left: 12px; } to { left: calc(100% - 28px); } }
+
+  .doc-h1 {
+    font-size: var(--text-display);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: var(--weight-semi);
+  }
+  .doc-h1 .accent { color: var(--accent-500); }
+  .doc-h2 {
+    font-size: var(--text-3xl);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-2);
+  }
+  .doc-h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+  .doc-lead {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 64ch;
+    line-height: var(--leading-normal);
+  }
+
+  .anchor-grid { display: grid; grid-template-columns: 220px 1fr; gap: var(--space-12); align-items: start; }
+  @media (max-width: 900px) { .anchor-grid { grid-template-columns: 1fr; gap: var(--space-6); } }
+
+  .anchor-grid__label {
+    position: sticky; top: 96px;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .anchor-grid__label-num { color: var(--accent-500); margin-right: var(--space-2); }
+
+  /* Variant strip layouts */
+  .variant-strip { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+
+  /* Compositions grid */
+  .compositions { display: flex; flex-direction: column; gap: var(--space-12); }
+
+  /* Hero composition */
+  .hero {
+    position: relative;
+    padding: var(--space-24) var(--space-12);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--bg-secondary);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__glow {
+    position: absolute;
+    width: 520px; height: 520px;
+    right: -120px; top: -120px;
+    background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 60%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hero__grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at top right, black 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hero__inner { display: flex; flex-direction: column; gap: var(--space-8); max-width: 880px; }
+  .hero__title {
+    font-size: clamp(48px, 6.4vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: var(--weight-semi);
+    color: var(--text-primary);
+  }
+  .hero__title .underline {
+    position: relative;
+    display: inline-block;
+  }
+  .hero__title .underline::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 4px;
+    height: 6px;
+    background: var(--accent-500);
+    z-index: -1;
+    opacity: 0.85;
+  }
+  .hero__lead {
+    font-size: var(--text-xl);
+    color: var(--text-secondary);
+    line-height: var(--leading-snug);
+    max-width: 60ch;
+  }
+  .hero__meta {
+    display: flex; flex-wrap: wrap; gap: var(--space-6) var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .hero__meta-item { display: flex; flex-direction: column; gap: var(--space-1); }
+  .hero__meta-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+  }
+  .hero__meta-value { font-size: var(--text-md); color: var(--text-primary); font-weight: var(--weight-medium); }
+  .hero__cta { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+
+  /* Speaker grid */
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 1100px) { .speaker-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Theme toggle */
+  .theme-toggle {
+    display: inline-flex; gap: 0;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: 2px;
+    background: var(--bg-secondary);
+  }
+  .theme-toggle button {
+    height: 28px; padding: 0 var(--space-3);
+    background: transparent; border: 0;
+    font: inherit;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .theme-toggle button[aria-pressed="true"] { background: var(--bg-inset); color: var(--text-primary); }
+
+  /* Rationale block */
+  .rationale {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-left: 2px solid var(--accent-500);
+    border-radius: var(--radius-md);
+    padding: var(--space-6) var(--space-8);
+    max-width: 72ch;
+  }
+  .rationale p + p { margin-top: var(--space-4); }
+  .rationale strong { color: var(--text-primary); font-weight: var(--weight-semi); }
+
+  /* Caption */
+  .caption {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-subtle);
+    margin-top: var(--space-3);
+  }
+
+  /* Code-style label box */
+  .label-bar {
+    display: flex; gap: var(--space-2); align-items: center;
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-inset);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--text-muted);
+    letter-spacing: var(--tracking-wide);
+    width: fit-content;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR (primitive demo + functional nav)
+     ============================================================ -->
+<nav class="navbar" aria-label="Principal">
+  <div class="container navbar__inner">
+    <a href="#top" class="navbar__brand" aria-label="AI-Driven Delivery">
+      <span class="navbar__brand-mark" aria-hidden="true">/</span>
+      <span>AI-Driven Delivery</span>
+    </a>
+    <div class="navbar__nav" role="list">
+      <a class="navbar__link" href="#tokens">Tokens</a>
+      <a class="navbar__link" href="#components">Componentes</a>
+      <a class="navbar__link" href="#hero">Hero</a>
+      <a class="navbar__link" href="#agenda">Agenda</a>
+      <a class="navbar__link" href="#speakers">Ponentes</a>
+    </div>
+    <div class="navbar__spacer"></div>
+    <div class="theme-toggle" role="group" aria-label="Tema">
+      <button type="button" data-theme-set="dark"  aria-pressed="true">Dark</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    </div>
+    <a href="#cta" class="btn btn--primary btn--sm" style="margin-left: var(--space-3);">Reservar plaza</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header id="top" class="section section--loose">
+  <div class="container" style="display:flex; flex-direction:column; gap: var(--space-8);">
+    <span class="eyebrow">eBFactory · Sistema de diseño · v1.0</span>
+    <h1 class="doc-h1">Sistema de diseño<br/><span class="accent">AI-Driven Delivery</span></h1>
+    <p class="doc-lead">
+      Tokens, primitivas y composiciones para una conferencia técnica seria sobre
+      Claude aplicado al ciclo completo de entrega de software. Construido para
+      desarrolladores; sin estética genérica de IA, sin emoji, sin clichés.
+    </p>
+  </div>
+</header>
+
+<!-- ============================================================
+     RATIONALE
+     ============================================================ -->
+<section class="section section--tight section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">00</span>Intent</div>
+      <div class="rationale">
+        <p>
+          <strong>Acento — Signal Green (#3DDC84).</strong>
+          Es la sintaxis nativa del oficio: prompts en terminal, líneas verdes en el
+          diff, el “check” de un build verde en CI. Los desarrolladores ya leen
+          verde sobre negro todo el día — el color hereda autoridad técnica
+          sin pedirla.
+        </p>
+        <p>
+          El violeta eléctrico se ha convertido en cliché de plantilla de IA;
+          el ámbar es cálido pero pierde la precisión de herramienta. El verde
+          se reserva para acentos puntuales: un solo “momento de IA” por
+          pantalla — un subrayado, una insignia, un glow — nunca un baño completo.
+        </p>
+        <p>
+          <strong>Resto del sistema.</strong> Fondo casi-negro con una capa de
+          grain SVG al 3.5% que rompe la planicie de las plantillas. Bordes a
+          1px / ~6% opacidad. Geist + Geist Mono — el mono se usa para datos,
+          índices y eyebrows; nunca decorativo. Tipografía pura, sin gradientes
+          en texto. Movimiento con <code class="mono">cubic-bezier(.16,1,.3,1)</code>,
+          240ms para UI; reservado a 720ms sólo en revelaciones narrativas.
+          Todo respeta <code class="mono">prefers-reduced-motion</code> y WCAG AA.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TOKENS
+     ============================================================ -->
+<section id="tokens" class="section section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">01</span>Tokens</div>
+      <div style="display:flex; flex-direction:column; gap: var(--space-16);">
+
+        <!-- COLOR -->
+        <div>
+          <h2 class="doc-h2">Color</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-8);">
+            Escala neutra ligeramente fría, un único acento, alias semánticos.
+            Light-mode mapeado vía variables CSS.
+          </p>
+
+          <h3 class="doc-h3" style="margin-top: var(--space-4);">Neutrals · 0–900</h3>
+          <div class="doc-grid doc-grid--6" style="margin-top: var(--space-3);">
+            <!-- Generated swatches -->
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-0);"></div><div class="swatch__meta"><span class="swatch__name">neutral-0</span><span class="swatch__token">--neutral-0</span><span class="swatch__hex">#0A0A0B</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-50);"></div><div class="swatch__meta"><span class="swatch__name">neutral-50</span><span class="swatch__token">--neutral-50</span><span class="swatch__hex">#111114</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-100);"></div><div class="swatch__meta"><span class="swatch__name">neutral-100</span><span class="swatch__token">--neutral-100</span><span class="swatch__hex">#16171A</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-200);"></div><div class="swatch__meta"><span class="swatch__name">neutral-200</span><span class="swatch__token">--neutral-200</span><span class="swatch__hex">#1C1D21</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-300);"></div><div class="swatch__meta"><span class="swatch__name">neutral-300</span><span class="swatch__token">--neutral-300</span><span class="swatch__hex">#25272C</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-400);"></div><div class="swatch__meta"><span class="swatch__name">neutral-400</span><span class="swatch__token">--neutral-400</span><span class="swatch__hex">#3A3D45</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-500);"></div><div class="swatch__meta"><span class="swatch__name">neutral-500</span><span class="swatch__token">--neutral-500</span><span class="swatch__hex">#5C606B</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-600);"></div><div class="swatch__meta"><span class="swatch__name">neutral-600</span><span class="swatch__token">--neutral-600</span><span class="swatch__hex">#8A8E99</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-700);"></div><div class="swatch__meta"><span class="swatch__name">neutral-700</span><span class="swatch__token">--neutral-700</span><span class="swatch__hex">#B4B7BF</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-800);"></div><div class="swatch__meta"><span class="swatch__name">neutral-800</span><span class="swatch__token">--neutral-800</span><span class="swatch__hex">#DADCE0</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--neutral-900);"></div><div class="swatch__meta"><span class="swatch__name">neutral-900</span><span class="swatch__token">--neutral-900</span><span class="swatch__hex">#F4F5F7</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--accent-500); box-shadow: var(--shadow-accent) inset;"></div><div class="swatch__meta"><span class="swatch__name">accent-500</span><span class="swatch__token">--accent-500</span><span class="swatch__hex">#3DDC84</span></div></div>
+          </div>
+
+          <h3 class="doc-h3" style="margin-top: var(--space-12);">Semantic aliases</h3>
+          <div class="doc-grid doc-grid--4" style="margin-top: var(--space-3);">
+            <div class="swatch"><div class="swatch__chip" style="background: var(--bg-primary);"></div><div class="swatch__meta"><span class="swatch__name">Background · primary</span><span class="swatch__token">--bg-primary</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--bg-secondary);"></div><div class="swatch__meta"><span class="swatch__name">Background · secondary</span><span class="swatch__token">--bg-secondary</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--bg-elevated);"></div><div class="swatch__meta"><span class="swatch__name">Background · elevated</span><span class="swatch__token">--bg-elevated</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--bg-inset);"></div><div class="swatch__meta"><span class="swatch__name">Background · inset</span><span class="swatch__token">--bg-inset</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--text-primary);"></div><div class="swatch__meta"><span class="swatch__name">Text · primary</span><span class="swatch__token">--text-primary</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--text-secondary);"></div><div class="swatch__meta"><span class="swatch__name">Text · secondary</span><span class="swatch__token">--text-secondary</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--text-muted);"></div><div class="swatch__meta"><span class="swatch__name">Text · muted</span><span class="swatch__token">--text-muted</span></div></div>
+            <div class="swatch"><div class="swatch__chip" style="background: var(--accent-500);"></div><div class="swatch__meta"><span class="swatch__name">Accent</span><span class="swatch__token">--accent</span></div></div>
+          </div>
+        </div>
+
+        <!-- TYPOGRAPHY -->
+        <div>
+          <h2 class="doc-h2">Tipografía</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            Geist (display) + Geist Mono (datos, etiquetas, código). Escala de
+            8 pasos, ratio 1.250 anclado en 16px.
+          </p>
+          <div class="label-bar">font-family: var(--font-sans) · var(--font-mono)</div>
+
+          <div style="margin-top: var(--space-6);">
+            <div class="scale-row"><span class="scale-row__token">--text-2xs</span><span class="scale-row__px">11 / mono</span><span class="scale-row__sample mono" style="font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--text-muted);">[01] LIGHTNING TALK · 15 MIN</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-xs</span><span class="scale-row__px">13 / mono</span><span class="scale-row__sample" style="font-size: var(--text-xs); color: var(--text-secondary);">Captions, metadatos, marcas de tiempo</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-sm</span><span class="scale-row__px">14</span><span class="scale-row__sample" style="font-size: var(--text-sm); color: var(--text-secondary);">UI secundaria — botones, navegación, badges</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-md</span><span class="scale-row__px">16</span><span class="scale-row__sample" style="font-size: var(--text-md);">Cuerpo base. Lectura larga, descripciones, párrafos.</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-lg</span><span class="scale-row__px">19</span><span class="scale-row__sample" style="font-size: var(--text-lg);">Lead paragraphs y bios destacadas.</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-xl</span><span class="scale-row__px">24</span><span class="scale-row__sample" style="font-size: var(--text-xl); font-weight: var(--weight-semi);">Títulos de tarjetas y filas</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-2xl</span><span class="scale-row__px">32</span><span class="scale-row__sample" style="font-size: var(--text-2xl); font-weight: var(--weight-semi);">Subhead de sección</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-3xl</span><span class="scale-row__px">44</span><span class="scale-row__sample" style="font-size: var(--text-3xl); font-weight: var(--weight-semi);">Encabezado de página</span></div>
+            <div class="scale-row"><span class="scale-row__token">--text-4xl</span><span class="scale-row__px">64</span><span class="scale-row__sample" style="font-size: var(--text-4xl); font-weight: var(--weight-semi);">Display compacto</span></div>
+          </div>
+        </div>
+
+        <!-- SPACING -->
+        <div>
+          <h2 class="doc-h2">Espaciado</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            Base 4px. Pasos no lineales por encima de 24 (saltos de
+            16/24/32/48/64/80/96/128) para evitar ruido en la escala.
+          </p>
+          <div>
+            <div class="space-row"><span class="scale-row__token">--space-1</span><span class="scale-row__px">4 px</span><div class="space-row__bar" style="width: 4px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-2</span><span class="scale-row__px">8 px</span><div class="space-row__bar" style="width: 8px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-3</span><span class="scale-row__px">12 px</span><div class="space-row__bar" style="width: 12px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-4</span><span class="scale-row__px">16 px</span><div class="space-row__bar" style="width: 16px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-6</span><span class="scale-row__px">24 px</span><div class="space-row__bar" style="width: 24px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-8</span><span class="scale-row__px">32 px</span><div class="space-row__bar" style="width: 32px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-12</span><span class="scale-row__px">48 px</span><div class="space-row__bar" style="width: 48px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-16</span><span class="scale-row__px">64 px</span><div class="space-row__bar" style="width: 64px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-24</span><span class="scale-row__px">96 px</span><div class="space-row__bar" style="width: 96px;"></div></div>
+            <div class="space-row"><span class="scale-row__token">--space-32</span><span class="scale-row__px">128 px</span><div class="space-row__bar" style="width: 128px;"></div></div>
+          </div>
+        </div>
+
+        <!-- RADII -->
+        <div>
+          <h2 class="doc-h2">Radii</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            4 niveles. Esquinas afiladas en lo funcional (badges, inputs);
+            suaves en lo expresivo (cards, modales).
+          </p>
+          <div class="doc-grid doc-grid--4">
+            <div class="radii-row">
+              <div class="radii-demo" style="border-radius: var(--radius-sm);"></div>
+              <div><div class="swatch__name">Small</div><div class="swatch__token">--radius-sm · 4px</div></div>
+            </div>
+            <div class="radii-row">
+              <div class="radii-demo" style="border-radius: var(--radius-md);"></div>
+              <div><div class="swatch__name">Medium</div><div class="swatch__token">--radius-md · 8px</div></div>
+            </div>
+            <div class="radii-row">
+              <div class="radii-demo" style="border-radius: var(--radius-lg);"></div>
+              <div><div class="swatch__name">Large</div><div class="swatch__token">--radius-lg · 12px</div></div>
+            </div>
+            <div class="radii-row">
+              <div class="radii-demo" style="border-radius: var(--radius-xl);"></div>
+              <div><div class="swatch__name">Extra</div><div class="swatch__token">--radius-xl · 20px</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHADOWS -->
+        <div>
+          <h2 class="doc-h2">Elevación · Shadows</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            En oscuro, la sombra es luz: borde interior sutil + sombra ambiente
+            estrecha. Tres niveles para botones/cards, modales y overlays.
+          </p>
+          <div class="doc-grid doc-grid--3">
+            <div class="shadow-card" style="box-shadow: var(--shadow-1);">
+              <div class="swatch__name">Elevation 1</div>
+              <div class="swatch__token">--shadow-1 · cards en reposo</div>
+            </div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-2);">
+              <div class="swatch__name">Elevation 2</div>
+              <div class="swatch__token">--shadow-2 · hover, modales pequeños</div>
+            </div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-3);">
+              <div class="swatch__name">Elevation 3</div>
+              <div class="swatch__token">--shadow-3 · overlay, modal mayor</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MOTION -->
+        <div>
+          <h2 class="doc-h2">Motion</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            Una sola curva expresiva — <code class="mono">--ease-out</code>.
+            UI 160–360ms; revelaciones narrativas hasta 720ms. Todo se anula
+            con <code class="mono">prefers-reduced-motion</code>.
+          </p>
+          <div class="doc-grid doc-grid--3">
+            <div>
+              <div class="motion-demo motion-demo--fast"><span class="motion-demo__dot"></span></div>
+              <div class="caption">--dur-fast · 160ms</div>
+            </div>
+            <div>
+              <div class="motion-demo motion-demo--base"><span class="motion-demo__dot"></span></div>
+              <div class="caption">--dur-base · 240ms</div>
+            </div>
+            <div>
+              <div class="motion-demo motion-demo--slow"><span class="motion-demo__dot"></span></div>
+              <div class="caption">--dur-slow · 360ms</div>
+            </div>
+          </div>
+          <div class="label-bar" style="margin-top: var(--space-6);">--ease-out: cubic-bezier(0.16, 1, 0.3, 1)</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPONENT PRIMITIVES
+     ============================================================ -->
+<section id="components" class="section section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">02</span>Primitives</div>
+      <div style="display:flex; flex-direction:column; gap: var(--space-12);">
+
+        <!-- BUTTON -->
+        <div>
+          <h2 class="doc-h2">Button</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            Cuatro variantes (<code class="mono">default · primary · ghost · outline</code>)
+            × tres tamaños (<code class="mono">sm · md · lg</code>). El primario es el
+            único uso de acento sólido en superficies grandes.
+          </p>
+          <div class="variant-strip" style="margin-bottom: var(--space-4);">
+            <button class="btn btn--primary">Reservar plaza</button>
+            <button class="btn">Ver agenda</button>
+            <button class="btn btn--outline">Patrocinar</button>
+            <button class="btn btn--ghost">Cancelar</button>
+            <button class="btn btn--primary" disabled>Disabled</button>
+          </div>
+          <div class="variant-strip">
+            <button class="btn btn--primary btn--sm">Small</button>
+            <button class="btn btn--primary">Medium</button>
+            <button class="btn btn--primary btn--lg">
+              Large
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- BADGE -->
+        <div>
+          <h2 class="doc-h2">Badge</h2>
+          <div class="variant-strip">
+            <span class="badge">DEFAULT</span>
+            <span class="badge badge--accent">LIVE</span>
+            <span class="badge badge--accent badge--dot">EN VIVO</span>
+            <span class="badge badge--solid">SOLD-OUT</span>
+            <span class="badge badge--muted">DRAFT</span>
+            <span class="badge"><span class="mono" style="color: var(--accent-500);">/01</span> CHARLA</span>
+          </div>
+        </div>
+
+        <!-- CARD -->
+        <div>
+          <h2 class="doc-h2">Card</h2>
+          <div class="doc-grid doc-grid--3" style="margin-top: var(--space-3);">
+            <div class="card">
+              <div class="eyebrow" style="margin-bottom: var(--space-3);">Default</div>
+              <h3 class="doc-h3">Card en reposo</h3>
+              <p style="font-size: var(--text-sm);">Superficie secundaria, borde sutil, sombra de elevación 1.</p>
+            </div>
+            <div class="card card--elevated">
+              <div class="eyebrow" style="margin-bottom: var(--space-3);">Elevated</div>
+              <h3 class="doc-h3">Card elevada</h3>
+              <p style="font-size: var(--text-sm);">Para destacar el ítem activo o seleccionado.</p>
+            </div>
+            <div class="card card--accent">
+              <div class="eyebrow" style="margin-bottom: var(--space-3);">Accent</div>
+              <h3 class="doc-h3">Card de acento</h3>
+              <p style="font-size: var(--text-sm);">Borde verde + lavado mínimo. Uno por pantalla, máximo.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODAL -->
+        <div>
+          <h2 class="doc-h2">Modal</h2>
+          <p class="doc-lead" style="margin-bottom: var(--space-6);">
+            Backdrop con blur, contenedor en superficie elevada, esquinas
+            <code class="mono">--radius-xl</code>, sombra de elevación 3.
+          </p>
+          <div style="position: relative; height: 360px; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-secondary);">
+            <!-- Inline modal demo (not portal'd, scoped to this box) -->
+            <div style="position: absolute; inset: 0; background: rgba(5,5,6,0.55); backdrop-filter: blur(8px); display: grid; place-items: center; padding: var(--space-6);">
+              <div class="modal" style="position: relative;">
+                <span class="badge badge--accent" style="margin-bottom: var(--space-4);">CONFIRMACIÓN</span>
+                <h3 class="modal__title">Reservar plaza</h3>
+                <p class="modal__body">
+                  Tu plaza queda apartada por 10 minutos mientras completas el pago.
+                  Recibirás el QR en tu correo inmediatamente después.
+                </p>
+                <div class="modal__actions">
+                  <button class="btn btn--ghost">Cancelar</button>
+                  <button class="btn btn--primary">Continuar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPOSITION 1 — HERO BLOCK
+     ============================================================ -->
+<section id="hero" class="section section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">03</span>Hero</div>
+      <div>
+        <div class="hero">
+          <div class="hero__glow" aria-hidden="true"></div>
+          <div class="hero__grid" aria-hidden="true"></div>
+          <div class="hero__inner">
+            <div style="display: flex; gap: var(--space-3); align-items: center;">
+              <span class="badge badge--accent badge--dot">14 NOV · 2026</span>
+              <span class="badge badge--muted">MEDELLÍN · ATELIER</span>
+            </div>
+            <h1 class="hero__title">
+              Claude en cada paso<br/>del ciclo de
+              <span class="underline">entrega</span>.
+            </h1>
+            <p class="hero__lead">
+              Cuatro charlas relámpago de quince minutos sobre cómo equipos reales
+              están aplicando IA al diseño de sistemas, al CMS, al CI/CD y a la
+              automatización del flujo. Sin slides de ventas. Demos en vivo.
+            </p>
+            <div class="hero__cta">
+              <button class="btn btn--primary btn--lg">
+                Reservar plaza
+                <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+              <button class="btn btn--lg btn--outline">Ver agenda</button>
+              <span class="mono" style="font-size: var(--text-xs); color: var(--text-muted); margin-left: var(--space-2);">42 / 80 plazas</span>
+            </div>
+            <div class="hero__meta">
+              <div class="hero__meta-item">
+                <span class="hero__meta-label">Duración</span>
+                <span class="hero__meta-value">4 × 15 min</span>
+              </div>
+              <div class="hero__meta-item">
+                <span class="hero__meta-label">Formato</span>
+                <span class="hero__meta-value">Presencial · Demo en vivo</span>
+              </div>
+              <div class="hero__meta-item">
+                <span class="hero__meta-label">Idioma</span>
+                <span class="hero__meta-value">Español</span>
+              </div>
+              <div class="hero__meta-item">
+                <span class="hero__meta-label">Anfitrión</span>
+                <span class="hero__meta-value">eBFactory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Hero block — composición 1 / 3 · sólo tokens</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPOSITION 2 — AGENDA TIMELINE
+     ============================================================ -->
+<section id="agenda" class="section section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">04</span>Agenda</div>
+      <div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-8);">
+          <div>
+            <span class="eyebrow">Programa · 14 NOV</span>
+            <h2 class="doc-h2" style="margin-top: var(--space-3);">Cuatro charlas, una hora.</h2>
+          </div>
+          <span class="badge">UTC-5 · MEDELLÍN</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-row">
+            <div class="timeline-row__time">
+              <span>18:00</span>
+              <span class="timeline-row__time-end">18:15</span>
+            </div>
+            <div class="timeline-row__body">
+              <span class="timeline-row__index">/01 · LIGHTNING TALK · 15 MIN</span>
+              <h3 class="timeline-row__title">Storybook con skills + hooks</h3>
+              <span class="timeline-row__speaker">Andrés Ramírez · Frontend Lead, eBFactory</span>
+              <p class="timeline-row__desc">
+                Sistemas de diseño que se documentan, prueban y refactorizan solos.
+                Skills de Claude conectados a hooks de Storybook para mantener la
+                paridad entre componentes vivos y la guía visual.
+              </p>
+            </div>
+            <span class="badge badge--accent">EN VIVO</span>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-row__time">
+              <span>18:15</span>
+              <span class="timeline-row__time-end">18:30</span>
+            </div>
+            <div class="timeline-row__body">
+              <span class="timeline-row__index">/02 · LIGHTNING TALK · 15 MIN</span>
+              <h3 class="timeline-row__title">Drupal + Web Components con IA</h3>
+              <span class="timeline-row__speaker">Laura Cardona · CMS Architect</span>
+              <p class="timeline-row__desc">
+                Cómo integramos componentes web modernos en un Drupal heredado
+                con asistencia de Claude, manteniendo la edición editorial intacta.
+              </p>
+            </div>
+            <span class="badge">DEMO</span>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-row__time">
+              <span>18:30</span>
+              <span class="timeline-row__time-end">18:45</span>
+            </div>
+            <div class="timeline-row__body">
+              <span class="timeline-row__index">/03 · LIGHTNING TALK · 15 MIN</span>
+              <h3 class="timeline-row__title">CI/CD con GitHub Actions y Pantheon multidev</h3>
+              <span class="timeline-row__speaker">Sergio Vélez · DevOps</span>
+              <p class="timeline-row__desc">
+                Pipelines que se autoexplican, PRs revisados con Claude antes
+                de que llegue un humano, environments multidev en cada rama.
+              </p>
+            </div>
+            <span class="badge">DEMO</span>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-row__time">
+              <span>18:45</span>
+              <span class="timeline-row__time-end">19:00</span>
+            </div>
+            <div class="timeline-row__body">
+              <span class="timeline-row__index">/04 · LIGHTNING TALK · 15 MIN</span>
+              <h3 class="timeline-row__title">Claude Code + MCP + n8n</h3>
+              <span class="timeline-row__speaker">Mariana López · Automation</span>
+              <p class="timeline-row__desc">
+                El stack completo de automatización: Claude Code controlando MCP
+                servers, n8n orquestando, todo el ciclo de soporte y delivery
+                tocando un solo prompt.
+              </p>
+            </div>
+            <span class="badge badge--accent">CIERRE</span>
+          </div>
+        </div>
+        <div class="caption">Agenda timeline — composición 2 / 3 · sólo tokens</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPOSITION 3 — SPEAKER GRID
+     ============================================================ -->
+<section id="speakers" class="section section--bordered">
+  <div class="container">
+    <div class="anchor-grid">
+      <div class="anchor-grid__label"><span class="anchor-grid__label-num">05</span>Speakers</div>
+      <div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-8);">
+          <div>
+            <span class="eyebrow">Ponentes</span>
+            <h2 class="doc-h2" style="margin-top: var(--space-3);">Cuatro practicantes, no influencers.</h2>
+          </div>
+        </div>
+
+        <div class="speaker-grid">
+
+          <article class="speaker-card">
+            <div class="speaker-card__avatar" aria-hidden="true">AR</div>
+            <div>
+              <div class="speaker-card__name">Andrés Ramírez</div>
+              <div class="speaker-card__role">Frontend Lead · eBFactory</div>
+            </div>
+            <p class="speaker-card__bio">
+              Diez años construyendo sistemas de diseño en producción. Mantenedor
+              del kit interno que sirve a 14 productos en LATAM.
+            </p>
+            <div class="speaker-card__topic">
+              <span class="speaker-card__topic-num">/01</span>
+              <span>Storybook con skills + hooks</span>
+            </div>
+          </article>
+
+          <article class="speaker-card">
+            <div class="speaker-card__avatar" aria-hidden="true">LC</div>
+            <div>
+              <div class="speaker-card__name">Laura Cardona</div>
+              <div class="speaker-card__role">CMS Architect</div>
+            </div>
+            <p class="speaker-card__bio">
+              Migra editoriales grandes a stacks composables sin que la redacción
+              note la diferencia. Ex-Vox Media, hoy independiente.
+            </p>
+            <div class="speaker-card__topic">
+              <span class="speaker-card__topic-num">/02</span>
+              <span>Drupal + Web Components</span>
+            </div>
+          </article>
+
+          <article class="speaker-card">
+            <div class="speaker-card__avatar" aria-hidden="true">SV</div>
+            <div>
+              <div class="speaker-card__name">Sergio Vélez</div>
+              <div class="speaker-card__role">DevOps · eBFactory</div>
+            </div>
+            <p class="speaker-card__bio">
+              Maintains the pipeline that ships eBFactory's ten largest clients.
+              Speaks fluent YAML, prefers it doesn't have to.
+            </p>
+            <div class="speaker-card__topic">
+              <span class="speaker-card__topic-num">/03</span>
+              <span>GitHub Actions + Pantheon</span>
+            </div>
+          </article>
+
+          <article class="speaker-card">
+            <div class="speaker-card__avatar" aria-hidden="true">ML</div>
+            <div>
+              <div class="speaker-card__name">Mariana López</div>
+              <div class="speaker-card__role">Automation Engineer</div>
+            </div>
+            <p class="speaker-card__bio">
+              Construye agentes que operan herramientas reales: Odoo, Linear,
+              Notion, Whatsapp. Ha eliminado 1,800 horas/año en dos clientes.
+            </p>
+            <div class="speaker-card__topic">
+              <span class="speaker-card__topic-num">/04</span>
+              <span>Claude Code + MCP + n8n</span>
+            </div>
+          </article>
+
+        </div>
+        <div class="caption">Speaker grid — composición 3 / 3 · sólo tokens</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="section section--tight section--bordered">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: var(--space-4);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+      <span class="navbar__brand">
+        <span class="navbar__brand-mark" aria-hidden="true">/</span>
+        <span>AI-Driven Delivery</span>
+      </span>
+      <span class="mono" style="font-size: var(--text-xs); color: var(--text-muted);">eBFactory · Medellín · 14 NOV 2026</span>
+    </div>
+    <div class="mono" style="font-size: var(--text-2xs); color: var(--text-subtle); text-transform: uppercase; letter-spacing: var(--tracking-wide);">
+      design system · v1.0 · tokens.css
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle — minimal, accessible
+  const root = document.documentElement;
+  document.querySelectorAll('[data-theme-set]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.getAttribute('data-theme-set');
+      root.setAttribute('data-theme', mode);
+      document.querySelectorAll('[data-theme-set]').forEach(b => {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

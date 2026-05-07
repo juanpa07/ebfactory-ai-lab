@@ -1,0 +1,12 @@
+{
+  "name": "ebfactory-ai-lab",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --port 3000 --open '/AI-Driven Delivery - Landing.html'",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

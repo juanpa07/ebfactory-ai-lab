@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI-Driven Delivery — Conferencia · eBFactory</title>
+<meta name="description" content="4 charlas lightning sobre cómo Claude transforma el ciclo de delivery — del componente al despliegue. Mayo 15, 2026 · Online · Gratis." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="landing.css" />
+
+<!-- GSAP + ScrollTrigger via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<!-- Embla Carousel -->
+<script src="https://cdn.jsdelivr.net/npm/embla-carousel@8.3.0/embla-carousel.umd.js"></script>
+<!-- Image-slot custom element for portrait image-slots -->
+<script src="image-slot.js"></script>
+<!-- Simulation scenario data -->
+<script src="simulation-scenarios.js"></script>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="lp-nav" id="lp-nav" aria-label="Principal">
+  <div class="container lp-nav__inner">
+    <a href="#top" class="navbar__brand" aria-label="AI-Driven Delivery">
+      <span class="navbar__brand-mark" aria-hidden="true">/</span>
+      <span>eBFactory AI-Lab</span>
+    </a>
+    <div class="lp-nav__menu" role="list">
+      <a href="#charlas">Charlas</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#agenda">Agenda</a>
+      <a href="#registro">Registro</a>
+    </div>
+    <a href="#registro" class="btn btn--primary btn--sm" style="margin-left: var(--space-3);">Reservar lugar</a>
+    <button class="lp-nav__hamburger" id="lp-hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="lp-mobile-menu">
+      <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="lp-mobile-menu" id="lp-mobile-menu" data-open="false" aria-hidden="true">
+  <button class="lp-mobile-menu__close" id="lp-mobile-close" aria-label="Cerrar menú">
+    <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+  </button>
+  <a href="#charlas" data-mobile-link>Charlas</a>
+  <a href="#speakers" data-mobile-link>Speakers</a>
+  <a href="#agenda" data-mobile-link>Agenda</a>
+  <a href="#registro" data-mobile-link>Registro</a>
+  <a href="#registro" data-mobile-link class="btn btn--primary btn--lg" style="margin-top: var(--space-6); justify-content: center;">Reservar lugar</a>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="lp-hero" id="top">
+  <div class="lp-hero__grid" aria-hidden="true"></div>
+  <div class="lp-hero__glow" id="lp-hero-glow" aria-hidden="true"></div>
+
+  <div class="container lp-hero__inner">
+    <div class="lp-hero__pill" data-hero-anim="pill">
+      <span class="lp-hero__pill-tag">Conferencia virtual</span>
+      <span class="lp-hero__pill-text">
+</span>
+    </div>
+
+    <h1 class="lp-hero__title" id="lp-hero-title">
+      <span class="lp-hero__line" aria-label="IA aplicada al ciclo">
+        <span class="lp-hero__word">IA</span>
+        <span class="lp-hero__word">aplicada</span>
+        <span class="lp-hero__word">al</span>
+        <span class="lp-hero__word">ciclo</span>
+      </span><br/>
+      <span class="lp-hero__line" aria-label="completo de delivery">
+        <span class="lp-hero__word">de desarrollo</span>
+        <span class="lp-hero__word">de</span>
+        <span class="lp-hero__word"><span class="underline">eBFactory</span></span>
+      </span>
+    </h1>
+
+    <p class="lp-hero__lead" data-hero-anim="lead">4 charlas en 1 hora sobre cómo la IA está transformando la construcción de software, recorriendo todo el ciclo: desde la abstracción de la idea y el desarrollo de componentes, pasando por la integración con el negocio, hasta los despliegues CI/CD y la automatización de servicios.</p>
+
+    <div class="lp-hero__date" data-hero-anim="date">
+      <span>Cuándo</span>
+      <strong>Mayo 15, 2026</strong>
+      <span class="lp-hero__date-sep" aria-hidden="true"></span>
+      <strong>4:00 PM – 5:00 PM</strong>
+      <span>(COT)</span>
+    </div>
+
+    <div class="lp-hero__cta" data-hero-anim="cta">
+      <a href="#registro" class="btn btn--primary btn--lg">
+        Reservar lugar
+        <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#agenda" class="btn btn--ghost btn--lg">Ver agenda</a>
+    </div>
+  </div>
+
+  <div class="lp-hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="lp-hero__scroll-line"></span>
+  </div>
+</section>
+
+<!-- ============================================================
+     NARRATIVE — pinned horizontal scroll
+     ============================================================ -->
+<section class="lp-narrative" id="charlas">
+  <div class="container lp-narrative__head">
+    <span class="eyebrow">El recorrido</span>
+    <h2 class="lp-narrative__title">Cuatro pilares.<br/>Un mismo flujo de trabajo.</h2>
+    <p class="lp-narrative__sub">
+      Del componente al automatismo — cómo Claude se inserta en cada eslabón
+      del ciclo, sin reemplazar al equipo.
+    </p>
+  </div>
+
+  <div class="lp-pin" id="lp-pin">
+    <div class="lp-pin__track" id="lp-pin-track">
+
+      <!-- Panel 1 -->
+      <article class="lp-pin__panel" data-panel="0">
+        <div class="lp-pin__panel-text">
+          <span class="lp-pin__numeral">/01 — CHARLA 01</span>
+          <h3 class="lp-pin__pillar">Storybook.</h3>
+          <p class="lp-pin__desc">Un design system que se documenta, prueba y refactoriza solo. Storybook + skills mantienen la paridad entre lo que ves y lo que se crea con reglas claras.</p>
+          <div class="lp-pin__tools">
+            <span class="badge">Storybook</span>
+            <span class="badge">CLAUDE</span>
+            <span class="badge">TYPESCRIPT</span>
+          </div>
+        </div>
+        <div class="lp-pin__diagram" data-diagram="component">
+          <div class="lp-pin__diagram-grid"></div>
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <!-- 9-up component grid -->
+            <g class="d-cmp">
+              <!-- nodes -->
+              <rect x="20"  y="20"  width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="78"  y="20"  width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="136" y="20"  width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="20"  y="78"  width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect class="d-cmp-active" x="78" y="78" width="44" height="44" rx="6" fill="rgba(61,220,132,0.12)" stroke="var(--accent-500)" stroke-width="1.5"/>
+              <rect x="136" y="78"  width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="20"  y="136" width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="78"  y="136" width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <rect x="136" y="136" width="44" height="44" rx="6" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <!-- inner detail on active -->
+              <line x1="86" y1="92" x2="114" y2="92" stroke="var(--accent-500)" stroke-width="1.5"/>
+              <line x1="86" y1="100" x2="106" y2="100" stroke="var(--accent-500)" stroke-width="1.5" opacity="0.6"/>
+              <line x1="86" y1="108" x2="110" y2="108" stroke="var(--accent-500)" stroke-width="1.5" opacity="0.4"/>
+            </g>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Panel 2 -->
+      <article class="lp-pin__panel" data-panel="1">
+        <div class="lp-pin__panel-text">
+          <span class="lp-pin__numeral">/02 — CHARLA 02</span>
+          <h3 class="lp-pin__pillar">Integración.</h3>
+          <p class="lp-pin__desc">Web components creados desde storybook e integrados a Drupal. Reglas claras de arquitectura en la AI para integrar componentes y generar tipos de contenido y reglas de negocio en la edición de contenido.</p>
+          <div class="lp-pin__tools">
+            <span class="badge">Drupal</span>
+            <span class="badge">Web Components</span>
+            <span class="badge">Skills</span>
+          </div>
+        </div>
+        <div class="lp-pin__diagram" data-diagram="cms">
+          <div class="lp-pin__diagram-grid"></div>
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <!-- CMS spine + components -->
+            <line x1="100" y1="20" x2="100" y2="180" stroke="var(--border-strong)" stroke-width="1"/>
+            <circle cx="100" cy="32" r="6" fill="var(--accent-500)"/>
+            <circle cx="100" cy="78" r="4" fill="var(--neutral-500)"/>
+            <circle cx="100" cy="124" r="4" fill="var(--neutral-500)"/>
+            <circle cx="100" cy="170" r="4" fill="var(--neutral-500)"/>
+            <!-- left labels -->
+            <rect x="20" y="22" width="56" height="20" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="48" y="36" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="9">testimonial</text>
+            <rect x="20" y="68" width="56" height="20" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="48" y="82" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="9">card-deck</text>
+            <rect x="20" y="114" width="56" height="20" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="48" y="128" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="9">cta-block</text>
+            <rect x="20" y="160" width="56" height="20" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="48" y="174" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="9">hero</text>
+            <!-- right side: language flags -->
+            <rect x="124" y="22" width="56" height="20" rx="4" fill="rgba(61,220,132,0.08)" stroke="var(--accent-500)"/>
+            <text x="152" y="36" text-anchor="middle" fill="var(--accent-500)" font-family="ui-monospace" font-size="9">es · en · pt</text>
+            <!-- connector lines -->
+            <line x1="76" y1="32" x2="100" y2="32" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="2 2"/>
+            <line x1="100" y1="32" x2="124" y2="32" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="2 2"/>
+            <line x1="76" y1="78" x2="100" y2="78" stroke="var(--neutral-500)" stroke-width="1" stroke-dasharray="2 2"/>
+            <line x1="76" y1="124" x2="100" y2="124" stroke="var(--neutral-500)" stroke-width="1" stroke-dasharray="2 2"/>
+            <line x1="76" y1="170" x2="100" y2="170" stroke="var(--neutral-500)" stroke-width="1" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Panel 3 -->
+      <article class="lp-pin__panel" data-panel="2">
+        <div class="lp-pin__panel-text">
+          <span class="lp-pin__numeral">/03 — CHARLA 03</span>
+          <h3 class="lp-pin__pillar">Github Actions.</h3>
+          <p class="lp-pin__desc">Github - CI/CD (Integración y Despliegue Continuos). Compila automáticamente el Storybook y lo despliega en un ambiente de Drupal en Pantheon, con el fin de facilitar las revisiones del equipo y el cliente.</p>
+          <div class="lp-pin__tools">
+            <span class="badge">GitHub Actions</span>
+            <span class="badge">Pantheon</span>
+            <span class="badge">Multidev</span>
+          </div>
+        </div>
+        <div class="lp-pin__diagram" data-diagram="ci">
+          <div class="lp-pin__diagram-grid"></div>
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <!-- pipeline horizontal flow -->
+            <line x1="20" y1="100" x2="180" y2="100" stroke="var(--border-strong)" stroke-width="1"/>
+            <!-- stages -->
+            <g>
+              <circle cx="36"  cy="100" r="10" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <text x="36" y="124" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="8">commit</text>
+              <circle cx="76"  cy="100" r="10" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <text x="76" y="124" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="8">review</text>
+              <circle cx="116" cy="100" r="10" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+              <text x="116" y="124" text-anchor="middle" fill="var(--text-muted)" font-family="ui-monospace" font-size="8">build</text>
+              <circle cx="156" cy="100" r="10" fill="rgba(61,220,132,0.12)" stroke="var(--accent-500)" stroke-width="1.5"/>
+              <text x="156" y="124" text-anchor="middle" fill="var(--accent-500)" font-family="ui-monospace" font-size="8">multidev</text>
+            </g>
+            <!-- claude label above review -->
+            <rect x="56" y="60" width="40" height="18" rx="4" fill="rgba(61,220,132,0.10)" stroke="var(--accent-500)"/>
+            <text x="76" y="73" text-anchor="middle" fill="var(--accent-500)" font-family="ui-monospace" font-size="9">Github</text>
+            <line x1="76" y1="78" x2="76" y2="90" stroke="var(--accent-500)" stroke-width="1"/>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Panel 4 -->
+      <article class="lp-pin__panel" data-panel="3">
+        <div class="lp-pin__panel-text">
+          <span class="lp-pin__numeral">/04 — CHARLA 04</span>
+          <h3 class="lp-pin__pillar">n8n.</h3>
+          <p class="lp-pin__desc">Automatización del canal de atención al cliente por whatsapp para la  Code controlando MCP servers, n8n orquestando. El equipo automatiza al equipo: la operación se vuelve un prompt.</p>
+          <div class="lp-pin__tools">
+            <span class="badge">Claude Code</span>
+            <span class="badge">MCP</span>
+            <span class="badge">n8n</span>
+          </div>
+        </div>
+        <div class="lp-pin__diagram" data-diagram="auto">
+          <div class="lp-pin__diagram-grid"></div>
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <!-- center hub -->
+            <circle cx="100" cy="100" r="22" fill="rgba(61,220,132,0.10)" stroke="var(--accent-500)" stroke-width="1.5"/>
+            <text x="100" y="103" text-anchor="middle" fill="var(--accent-500)" font-family="ui-monospace" font-size="9">Agente AI</text>
+            <!-- spokes -->
+            <line x1="100" y1="78" x2="100" y2="40" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="78"  y1="100" x2="40" y2="100" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="122" y1="100" x2="160" y2="100" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="100" y1="122" x2="100" y2="160" stroke="var(--accent-500)" stroke-width="1" stroke-dasharray="3 3"/>
+            <!-- nodes -->
+            <rect x="76"  y="22" width="48" height="22" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="100" y="37" text-anchor="middle" fill="var(--text-secondary)" font-family="ui-monospace" font-size="9">Odoo</text>
+            <rect x="14"  y="89" width="40" height="22" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="34" y="104" text-anchor="middle" fill="var(--text-secondary)" font-family="ui-monospace" font-size="9">Whatsapp</text>
+            <rect x="146" y="89" width="40" height="22" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="166" y="104" text-anchor="middle" fill="var(--text-secondary)" font-family="ui-monospace" font-size="9">n8n</text>
+            <rect x="76"  y="156" width="48" height="22" rx="4" fill="var(--bg-elevated)" stroke="var(--border-default)"/>
+            <text x="100" y="171" text-anchor="middle" fill="var(--text-secondary)" font-family="ui-monospace" font-size="9">github</text>
+          </svg>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="lp-pin__progress" id="lp-pin-progress" aria-hidden="true">
+      <span class="lp-pin__dot" data-active="true"></span>
+      <span class="lp-pin__dot"></span>
+      <span class="lp-pin__dot"></span>
+      <span class="lp-pin__dot"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPEAKERS — Embla carousel
+     ============================================================ -->
+<section class="lp-speakers" id="speakers">
+  <div class="container">
+    <div class="lp-speakers__head">
+      <div class="lp-speakers__head-title">
+        <span class="eyebrow">Quienes hablan</span>
+        <h2>Cuatro desarrolladores Rockstar!!!</h2>
+        <p>Cada compañero enseña su experiencia.</p>
+      </div>
+      <div class="lp-speakers__nav">
+        <button class="lp-speakers__navbtn" id="emb-prev" aria-label="Speaker anterior">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="lp-speakers__navbtn" id="emb-next" aria-label="Siguiente speaker">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="embla" id="embla">
+      <div class="embla__container" id="embla-container">
+        <!-- Slides injected via JS to bind speaker data -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Speaker modal -->
+<div class="lp-modal-backdrop" id="lp-modal" data-open="false" role="dialog" aria-modal="true" aria-labelledby="lp-modal-name" aria-hidden="true">
+  <div class="lp-modal" id="lp-modal-inner">
+    <div class="lp-modal__portrait" id="lp-modal-portrait">
+      <!-- image-slot injected by JS -->
+    </div>
+    <div class="lp-modal__body">
+      <button class="lp-modal__close" id="lp-modal-close" aria-label="Cerrar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+      <div>
+        <div class="lp-modal__name" id="lp-modal-name">—</div>
+        <div class="lp-modal__role" id="lp-modal-role">—</div>
+      </div>
+      <div id="lp-modal-bio"></div>
+      <a class="lp-modal__talk" id="lp-modal-talk" href="#agenda">
+        <span class="lp-modal__talk-label">Su charla</span>
+        <span class="lp-modal__talk-title" id="lp-modal-talk-title">—</span>
+        <span class="lp-modal__talk-time" id="lp-modal-talk-time">—</span>
+      </a>
+      <div class="lp-modal__socials" id="lp-modal-socials">
+        <!-- social links injected -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     AGENDA
+     ============================================================ -->
+<section class="lp-agenda" id="agenda">
+  <div class="container">
+    <div class="lp-agenda__head">
+      <span class="eyebrow">Agenda · Mayo 15, 2026</span>
+      <h2 class="lp-agenda__title">Una hora.<br/>Cuatro ideas. Cero relleno.</h2>
+    </div>
+
+    <!-- ── Countdown ── -->
+    <div class="lp-countdown" id="lp-countdown" role="timer" aria-label="Cuenta regresiva al evento">
+      <div class="lp-countdown__glow" aria-hidden="true"></div>
+      <div class="lp-countdown__header">
+        <span class="lp-countdown__cot-tag">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Mayo 15 · 4:00 PM · Medellín (COT)
+        </span>
+        <span class="lp-countdown__local" id="lp-countdown-local" aria-live="polite"></span>
+      </div>
+      <div class="lp-countdown__grid">
+        <div class="lp-countdown__unit">
+          <span class="lp-countdown__num" id="lp-cd-days">--</span>
+          <span class="lp-countdown__lbl">días</span>
+        </div>
+        <div class="lp-countdown__sep" aria-hidden="true">:</div>
+        <div class="lp-countdown__unit">
+          <span class="lp-countdown__num" id="lp-cd-hours">--</span>
+          <span class="lp-countdown__lbl">horas</span>
+        </div>
+        <div class="lp-countdown__sep" aria-hidden="true">:</div>
+        <div class="lp-countdown__unit">
+          <span class="lp-countdown__num" id="lp-cd-mins">--</span>
+          <span class="lp-countdown__lbl">minutos</span>
+        </div>
+        <div class="lp-countdown__sep" aria-hidden="true">:</div>
+        <div class="lp-countdown__unit">
+          <span class="lp-countdown__num" id="lp-cd-secs">--</span>
+          <span class="lp-countdown__lbl">segundos</span>
+        </div>
+      </div>
+      <div class="lp-countdown__live" id="lp-countdown-live" hidden>
+        <span class="lp-countdown__live-badge">
+          <span class="lp-countdown__live-dot" aria-hidden="true"></span>
+          En vivo ahora
+        </span>
+        <p class="lp-countdown__live-title">El evento está<br/>en vivo ahora mismo</p>
+        <a href="#registro" class="btn btn--primary">
+          Unirse al evento
+          <svg class="icon icon--lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="lp-timeline" id="lp-timeline">
+
+      <article class="lp-timeline__row" data-row="0" data-live="true">
+        <div class="lp-timeline__time">
+          <span>4:00 – 4:15</span>
+          <span class="lp-timeline__time-end">15 min · COT</span>
+        </div>
+        <div class="lp-timeline__body">
+          <span class="lp-timeline__num">/01 · Charla 1 · En vivo</span>
+          <h3 class="lp-timeline__talk-title">Del Design System al componente en minutos</h3>
+          <p class="lp-timeline__speaker">Santiago Gonzales · Fullstack Developer</p>
+          <p class="lp-timeline__hook">Storybook + Claude + skills de arquitectura.</p>
+        </div>
+      </article>
+
+      <article class="lp-timeline__row" data-row="1">
+        <div class="lp-timeline__time">
+          <span>4:15 – 4:30</span>
+          <span class="lp-timeline__time-end">15 min · COT</span>
+        </div>
+        <div class="lp-timeline__body">
+          <span class="lp-timeline__num">/02 · Charla 2</span>
+          <h3 class="lp-timeline__talk-title">Del componente al CMS gobernado</h3>
+          <p class="lp-timeline__speaker">Edwin · Fullstack Developer</p>
+          <p class="lp-timeline__hook">Web Component + Drupal + skills de modelado.</p>
+        </div>
+      </article>
+
+      <article class="lp-timeline__row" data-row="2">
+        <div class="lp-timeline__time">
+          <span>4:30 – 4:45</span>
+          <span class="lp-timeline__time-end">15 min · COT</span>
+        </div>
+        <div class="lp-timeline__body">
+          <span class="lp-timeline__num">/03 · Charla 3</span>
+          <h3 class="lp-timeline__talk-title">Del commit al multiambiente con confianza</h3>
+          <p class="lp-timeline__speaker">Alejandro Perez · Fullstack Developer</p>
+          <p class="lp-timeline__hook">GitHub Actions + Claude review + Pantheon.</p>
+        </div>
+      </article>
+
+      <article class="lp-timeline__row" data-row="3">
+        <div class="lp-timeline__time">
+          <span>4:45 – 5:00</span>
+          <span class="lp-timeline__time-end">15 min · COT</span>
+        </div>
+        <div class="lp-timeline__body">
+          <span class="lp-timeline__num">/04 · Charla 4 · Cierre</span>
+          <h3 class="lp-timeline__talk-title">Cuando el equipo automatiza al equipo</h3>
+          <p class="lp-timeline__speaker">Alejandro Toro · Fullstack Developer</p>
+          <p class="lp-timeline__hook">Claude Code + MCP + n8n.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="lp-agenda__footnote">
+      Formato lightning: cada charla es una idea concentrada.
+      Repos y grabaciones se comparten al cierre.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SIMULATION — AI EN ACCIÓN
+     ============================================================ -->
+<section class="lp-sim" id="simulacion">
+  <div class="container">
+    <div class="lp-sim__head">
+      <span class="eyebrow">AI en acción</span>
+      <h2 class="lp-sim__title">Así trabajamos con IA en proyectos reales.</h2>
+      <p class="lp-sim__sub">
+        Una simulación de cómo los modelos LLM cómo por ejemplo Claude, entre otros, colabora con el equipo de eBFactory
+        en un proyecto típico de cliente.
+      </p>
+    </div>
+
+    <div class="lp-sim__panel">
+      <!-- TERMINAL -->
+      <div class="lp-term">
+        <div class="lp-term__bar">
+          <div class="lp-term__lights" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span class="lp-term__title" id="lp-term-title">Consola de comandos · ~/projects/cliente-bid</span>
+        </div>
+        <div class="lp-term__body" id="lp-term-body" aria-live="polite" aria-atomic="false">
+          <!-- typed lines injected -->
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="lp-prev">
+        <div class="lp-prev__bar">
+          <div class="lp-term__lights" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span class="lp-prev__url" id="lp-prev-url">~/preview · waiting…</span>
+        </div>
+        <div class="lp-prev__body">
+          <div class="lp-prev__stage" id="lp-prev-stage">
+            <span class="lp-prev__empty" id="lp-prev-empty">Esperando prompt…</span>
+
+            <!-- Scenario A: testimonial card -->
+            <div class="sim-testimonial" id="sim-testimonial" data-show="false" hidden>
+              <p class="sim-testimonial__quote">"Migramos 14 productos en 4 sprints. La revisión automática nos ahorró 200 horas."</p>
+              <div class="sim-testimonial__author">
+                <div class="sim-testimonial__avatar"></div>
+                <div>
+                  <div class="sim-testimonial__name">Andrea Ríos</div>
+                  <div class="sim-testimonial__role">CTO · Empresa cliente</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scenario B: drupal field config -->
+            <div class="sim-drupal" id="sim-drupal" data-show="false" hidden>
+              <div class="sim-drupal__header">node.type.testimonial · 4 fields</div>
+              <div class="sim-drupal__field" data-field="0">
+                <div class="sim-drupal__field-name">
+                  Cita
+                  <span class="sim-drupal__field-machine">field_quote</span>
+                </div>
+                <div class="sim-drupal__field-type">text_long</div>
+              </div>
+              <div class="sim-drupal__field" data-field="1">
+                <div class="sim-drupal__field-name">
+                  Autor
+                  <span class="sim-drupal__field-machine">field_author_name</span>
+                </div>
+                <div class="sim-drupal__field-type">string</div>
+              </div>
+              <div class="sim-drupal__field" data-field="2">
+                <div class="sim-drupal__field-name">
+                  Cargo
+                  <span class="sim-drupal__field-machine">field_author_role</span>
+                </div>
+                <div class="sim-drupal__field-type">string</div>
+              </div>
+              <div class="sim-drupal__field" data-field="3">
+                <div class="sim-drupal__field-name">
+                  Avatar
+                  <span class="sim-drupal__field-machine">field_avatar</span>
+                </div>
+                <div class="sim-drupal__field-type">image</div>
+              </div>
+            </div>
+
+            <!-- Scenario C: n8n graph -->
+            <div class="sim-graph" id="sim-graph" data-show="false" hidden>
+              <svg viewBox="0 0 400 300">
+                <!-- Edges -->
+                <path class="sim-graph__edge" d="M 60 80 C 120 80, 120 80, 180 80"/>
+                <path class="sim-graph__edge" d="M 60 200 C 120 200, 120 200, 180 200"/>
+                <path class="sim-graph__edge sim-graph__edge-new" d="M 240 80 C 290 80, 290 140, 340 140"/>
+                <path class="sim-graph__edge sim-graph__edge-new" d="M 240 200 C 290 200, 290 140, 340 140"/>
+                <!-- Nodes -->
+                <g>
+                  <rect class="sim-graph__node-bg" x="20"  y="60"  width="80" height="40" rx="6"/>
+                  <text class="sim-graph__node-text" x="60" y="84" text-anchor="middle">webhook</text>
+                  <rect class="sim-graph__node-bg" x="20"  y="180" width="80" height="40" rx="6"/>
+                  <text class="sim-graph__node-text" x="60" y="204" text-anchor="middle">filter</text>
+
+                  <rect class="sim-graph__node-bg-new" x="180" y="60"  width="80" height="40" rx="6"/>
+                  <text class="sim-graph__node-text" x="220" y="84" text-anchor="middle">http · ║</text>
+                  <rect class="sim-graph__node-bg-new" x="180" y="180" width="80" height="40" rx="6"/>
+                  <text class="sim-graph__node-text" x="220" y="204" text-anchor="middle">http · ║</text>
+
+                  <rect class="sim-graph__node-bg-new" x="320" y="120" width="60" height="40" rx="6"/>
+                  <text class="sim-graph__node-text" x="350" y="144" text-anchor="middle">Whatsapp</text>
+                  <text class="sim-graph__node-text" x="350" y="156" text-anchor="middle" fill="var(--accent-500)">+retry</text>
+                </g>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-sim__controls">
+      <div class="lp-sim__steps" role="tablist" aria-label="Escenarios">
+        <button class="lp-sim__step-dot" data-step="0" data-active="true">1 / 3 · componente</button>
+        <button class="lp-sim__step-dot" data-step="1">2 / 3 · cms</button>
+        <button class="lp-sim__step-dot" data-step="2">3 / 3 · automatización</button>
+      </div>
+      <div class="lp-sim__btns">
+        <button class="btn btn--ghost btn--sm" id="sim-prev">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          Anterior
+        </button>
+        <button class="btn btn--ghost btn--sm" id="sim-next">
+          Siguiente
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <button class="btn btn--outline btn--sm" id="sim-toggle">
+          <span id="sim-toggle-label">⏸ Pausar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section class="lp-cta" id="registro">
+  <div class="lp-cta__glow" aria-hidden="true"></div>
+  <div class="container lp-cta__inner">
+    <span class="eyebrow">Reserva</span>
+    <h2 class="lp-cta__title">Reserva tu lugar.</h2>
+    <p class="lp-cta__sub">Una hora. Cuatro ideas. Cero relleno.</p>
+
+    <form class="lp-cta__form" id="lp-cta-form" novalidate>
+      <label class="sr-only" for="lp-cta-email">Correo electrónico</label>
+      <input id="lp-cta-email" type="email" required placeholder="tucorreo@empresa.com" autocomplete="email"/>
+      <button class="btn btn--primary" type="submit">Reservar</button>
+    </form>
+    <p class="lp-cta__note" id="lp-cta-note">Te enviaremos el link 24h antes del evento.</p>
+    <p class="lp-cta__privacy">
+      <a href="#" data-route="privacidad">/ política de privacidad</a>
+    </p>
+  </div>
+</section>
+
+<!-- YouTube modal -->
+<div class="lp-yt-backdrop" id="lp-yt-modal" data-open="false" role="dialog" aria-modal="true" aria-label="Video de presentación" aria-hidden="true">
+  <div class="lp-yt-modal">
+    <button class="lp-yt-modal__close" id="lp-yt-close" aria-label="Cerrar video">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="lp-yt-modal__frame">
+      <iframe id="lp-yt-iframe" src="" title="AI-Driven Delivery — eBFactory" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="lp-footer">
+  <div class="container lp-footer__inner">
+    <div class="lp-footer__brand">
+      <span class="navbar__brand-mark" aria-hidden="true">/</span>
+      <span class="lp-footer__tag">eBFactory · Software craft from Medellín.</span>
+    </div>
+    <div class="lp-footer__socials">
+      <a class="lp-modal__social" href="#" aria-label="LinkedIn">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+      </a>
+      <a class="lp-modal__social" href="#" aria-label="GitHub">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 6.77 5.07 5.07 0 0 0 19.91 3S18.73 2.65 16 4.55a13.38 13.38 0 0 0-7 0C6.27 2.65 5.09 3 5.09 3A5.07 5.07 0 0 0 5 6.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 20.13V24"/></svg>
+      </a>
+      <a class="lp-modal__social" href="#" aria-label="X / Twitter">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>
+      </a>
+    </div>
+    <span class="lp-footer__copy">© 2026 · eBFactory · v1.0</span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SPEAKER DATA + PAGE LOGIC
+     ============================================================ -->
+<script>
+/* ---------------- Speaker data ---------------- */
+const SPEAKERS = [
+  {
+    id: 'jpm',
+    name: 'Santiago Gonzales',
+    role: 'Fullstack Developer',
+    photo: 'assets/speakers/santiago-gonzales.png',
+    topic: 'Del Design System al componente en minutos',
+    talkNum: '01',
+    talkTime: '4:00 – 4:15 · COT',
+    bio: [
+      'Lidera el frontend de los productos internos en eBFactory desde hace seis años. Mantenedor del kit que sirve a 14 plataformas en LATAM.',
+      'Ha hablado en JSConf Colombia y Local First Bogotá. Cree que un design system útil es uno que se puede borrar y reconstruir en una tarde.',
+      'Hoy investiga cómo skills + hooks de Storybook pueden cerrar la brecha entre tokens, componentes y la documentación que de verdad lee el equipo.'
+    ]
+  },
+  {
+    id: 'mlr',
+    name: 'Edwin Rincon',
+    role: 'Fullstack Developer',
+    photo: 'assets/speakers/edwin-rincon.png',
+    topic: 'Del componente al CMS gobernado',
+    talkNum: '02',
+    talkTime: '4:15 – 4:30 · COT',
+    bio: [
+      'Arquitecta de CMS independiente. Ha migrado redacciones grandes —incluyendo dos diarios nacionales— a stacks composables sin que la edición editorial note la transición.',
+      'Especialista en gobernanza de contenido multilingüe sobre Drupal 10. Ex-Vox Media Latam, hoy independiente.',
+      'En esta charla muestra cómo modela un content type traducible a 3 idiomas en menos de cinco minutos, asistida por skills de Claude.'
+    ]
+  },
+  {
+    id: 'cag',
+    name: 'Alejandro Perez',
+    role: 'Fullstack Developer',
+    photo: 'assets/speakers/alejandro-perez.webp',
+    topic: 'Del commit al multiambiente con confianza',
+    talkNum: '03',
+    talkTime: '4:30 – 4:45 · COT',
+    bio: [
+      'Mantiene los pipelines de los diez clientes más grandes de eBFactory. Habla YAML fluido y prefiere que no haga falta.',
+      'En 2025 introdujo la revisión automática de PRs con Claude en la organización: redujo el tiempo medio de fusión de 26 a 9 horas.',
+      'Comparte cómo el equipo conecta GitHub Actions con Pantheon multidev — cada rama vive en su propio ambiente, con su propia base de datos.'
+    ]
+  },
+  {
+    id: 'jh',
+    name: 'Alejandro Toro',
+    role: 'Fullstack Developer',
+    photo: 'assets/speakers/alejandro-toro.png',
+    topic: 'Cuando el equipo automatiza al equipo',
+    talkNum: '04',
+    talkTime: '4:45 – 5:00 · COT',
+    bio: [
+      'Construye agentes que operan herramientas reales: Odoo, Linear, Notion, Whatsapp. En dos clientes ha eliminado más de 1,800 horas/año de trabajo repetitivo.',
+      'Convencido de que MCP es el "USB-C" de los agentes — y de que n8n es el patch panel.',
+      'Cierra la conferencia explicando un stack completo: Claude Code controlando MCP servers, n8n orquestando, todo el ciclo de soporte tocando un solo prompt.'
+    ]
+  }
+];
+</script>
+<script src="landing.js"></script>
+
+</body>
+</html>
