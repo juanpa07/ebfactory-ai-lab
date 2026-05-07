@@ -120,6 +120,18 @@ body { overflow-x: hidden; }
   66%  { transform: translate(-240px, 20px) scale(0.95); }
   100% { transform: translate(-360px, 100px) scale(1.05); }
 }
+.lp-hero__glow--secondary {
+  right: auto; top: auto;
+  left: -160px; top: 30%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle at center, rgba(167,139,250,0.14) 0%, transparent 60%);
+  animation: lp-hero-drift-b 12s ease-in-out infinite alternate;
+}
+@keyframes lp-hero-drift-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(300px, -40px) scale(1.08); }
+  100% { transform: translate(500px, -20px) scale(0.95); }
+}
 
 .lp-hero__inner { display: flex; flex-direction: column; gap: var(--space-8); max-width: 920px; }
 
