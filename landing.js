@@ -568,10 +568,12 @@
       const diff = forceLive ? 0 : EVENT_UTC.getTime() - Date.now();
 
       if (diff <= 0) {
-        const grid   = $('#lp-countdown .lp-countdown__grid');
-        const header = $('#lp-countdown .lp-countdown__header');
-        if (grid)   grid.hidden   = true;
-        if (header) header.hidden = true;
+        const grid    = $('#lp-countdown .lp-countdown__grid');
+        const header  = $('#lp-countdown .lp-countdown__header');
+        const tagline = $('#lp-countdown-tagline');
+        if (grid)    grid.hidden    = true;
+        if (header)  header.hidden  = true;
+        if (tagline) tagline.hidden = true;
         if (elLive) elLive.dataset.visible = 'true';
         return; // stop
       }
