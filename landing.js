@@ -531,7 +531,7 @@
     if (!elDays) return;
 
     // 4:00 PM COT = UTC-5 → 21:00 UTC
-    const EVENT_UTC = new Date('2026-05-15T21:00:00.000Z');
+    const EVENT_UTC = new Date('2026-05-22T21:00:00.000Z');
 
     // Show the user's local equivalent of the event time
     try {
